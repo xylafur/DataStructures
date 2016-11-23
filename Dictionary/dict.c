@@ -39,7 +39,8 @@ int hash(char *inputS){
 //function to assign a value to our dict array
 //  returns 1 if the element already existed, 0
 //  if the element had to be added
-int assign(dict* pD, int index, char *inKey, int inVal){
+int assign(dict* pD, char *inKey, int inVal){
+  int index = hash(inKey);
   //if the dict has not been assigned the key will have
   //  a value == to NULL
   if(pD[index].key == NULL){
@@ -51,7 +52,7 @@ int assign(dict* pD, int index, char *inKey, int inVal){
   //  key and value then we must make sure that it is the
   //  final node at that specific index
 
-  dict *temp = &pD[index];    //temp to go through linked list
+  dict *temp = &pD[index];    //temp pointer to go through linked list
   while(temp->pNext != NULL){
 
     //this means the key already exists
@@ -75,7 +76,7 @@ int main(){
 
   dict *D = calloc(DICTSIZE, sizeof(dict));
 
-  assign(D, hash("Kesley"), "Kesley", 7);
+  assign(D, "Kesley", 7);
 
   printf("%s", D->key);
   printf("%d", D->key==NULL);
