@@ -25,10 +25,25 @@ typedef struct DictionaryNode{
   struct DictionaryNode *pNext;
 } dict;
 
+//function to hash our key
+int hash(char *inputS){
+  int sum = 0;
+  while(*inputS != '\0'){
+    sum += (*inputS - '0');
+    inputS++;
+  }
+  printf("The sum value is: %d\n", sum);
+  return (sum % DICTSIZE);
+}
 
 int main(){
 
   dict *D = malloc( sizeof(dict) * DICTSIZE);
+  int i = hash("Kesley");
+
+  printf("%d", i);
+
+
   return 0;
 
 }
