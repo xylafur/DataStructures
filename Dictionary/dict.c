@@ -166,17 +166,63 @@ void printDict(dict *pD){
   printf(" }\n");
 }
 
+//function to remove item by key
+void removeItem(dict *pD, char *inKey){
+  int index = hash(inKey);
+
+  //elmBefore is needed because it is not a doubly linked list.
+  //  To correctly remove the element we must ensure that we do not sever
+  //  connection between elements that may come after it.
+  dict *toDel = &pD[index];
+  dict *elmBefore = toDel;
+  while(1){
+    //if were at the correct element of the linked list
+    //  we break out of the loop to remove the element and fix the list
+    if(strcmp(toDel->key, inKey) == 0)
+      break;
+
+    //meaning the key was not present
+    if(toDel->key == NULL)
+    {
+      printf("Not a valid item to delete.. Exiting.\n");
+      exit(8);
+    }
+    elmBefore = toDel;
+    toDel = toDel->pNext;
+  }
+
+  //if elmBefore and toDel are equal to the same element that means
+  //  that the element we are deleting was the first.
+  if( strcmp(elmBefore->key, toDel->key ) == 0 ){
+    printf("Deleting first Element in list\n");
+
+    //meaning it is the only element in the linked list
+    if(toDel->pNext == NULL){
+      toDel->key = NULL;
+      toDel->value = 0;
+    }
+    else{
+      toDel->key = toDel->pNext->key;
+      toDel->value = toDel->pNext->value;
+      toDel->pNext = (toDel->pNext->pNext);
+    }
+  }
+  else{
+    elmBefore->pNext = toDel->pNext;
+    free(toDel);
+  }
+
+
+}
+
 void test(dict *D){
   printf("If 1 the element already existed: %d\n", assign(D, "Kesley", 7) );
-  printf("If 1 the element already existed: %d\n", assign(D, "Kesley", 9) );
   printf("If 1 the element already existed: %d\n", assign(D, "Keegan", 8) );
-  printf("If 1 the element already existed: %d\n", assign(D, "Keegan", 5) );
   printf("If 1 the element already existed: %d\n", assign(D, "Darla", 2) );
-  printf("If 1 the element already existed: %d\n", assign(D, "Darla", 6) );
 
+  printDict(D);
 
-  printf("%d\n\n", len(D) );
-
+  removeItem(D, "Kesley");
   printDict(D);
 
 }
