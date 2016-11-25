@@ -49,16 +49,13 @@ int assign(dict* pD, char *inKey, int inVal){
   //if the dict has not been assigned the key will have
   //  a value == to NULL
   if(pD[index].key == NULL){
-    //printf("Does not contain key\n");
-
     pD[index].key = inKey;
     pD[index].value = inVal;
     return 0;
   }
   //if the specific index has already been assigned a
-  //  key and value then we must make sure that it is the
-  //  final node at that specific index
-
+  //  key and value then we must make sure that it is placed
+  //  at the final node at that specific index
   dict *temp = &pD[index];    //temp pointer to go through linked list
   while(temp->pNext != NULL){
 
@@ -122,10 +119,14 @@ int value(dict *pD, char *inKey){
 int len(dict *pD){
   int i, count = 0;
   for(i = 0; i < DICTSIZE; i++){
+    //if there is no item at the present index we go to the
+    //  next index.  Otherwise increase count.
     if(pD[i].key ==NULL)
       continue;
     count++;
 
+    //we use temp and the while loop to trancend the linked
+    //  list that may exist at each index.
     dict *temp = &pD[i];
     while(temp->pNext !=NULL){
       count++;
@@ -135,15 +136,36 @@ int len(dict *pD){
   return count;
 }
 
-void test(dict *D){
-  assign(D, "Kesley", 7);
-  assign(D, "Kesley", 7);
-  assign(D, "Keegan", 8);
-  assign(D, "Keegan", 8);
-  assign(D, "Darla", 2);
-  assign(D, "Darla", 2);
+void printDict(dict *pD){
+  int i;
+  printf("{ ");
+  for(i = 0; i < DICTSIZE; i++){
+    if(pD[i].key ==NULL)
+      continue;
 
-  printf("%d", len(D) );
+    dict *temp = &pD[i];
+    while(1){
+      printf("%s: %d,  ", temp->key, temp->value);
+      if(temp->pNext == NULL)
+        break;
+      temp = temp->pNext;
+    }
+  }
+  printf(" }\n");
+}
+
+void test(dict *D){
+  printf("If 1 the element already existed: %d\n", assign(D, "Kesley", 7) );
+  printf("If 1 the element already existed: %d\n", assign(D, "Kesley", 7) );
+  printf("If 1 the element already existed: %d\n", assign(D, "Keegan", 8) );
+  printf("If 1 the element already existed: %d\n", assign(D, "Keegan", 8) );
+  printf("If 1 the element already existed: %d\n", assign(D, "Darla", 2) );
+  printf("If 1 the element already existed: %d\n", assign(D, "Darla", 2) );
+
+
+  printf("%d\n\n", len(D) );
+
+  printDict(D);
 
 }
 
