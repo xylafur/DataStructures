@@ -49,7 +49,7 @@ int assign(dict* pD, char *inKey, int inVal){
   //if the dict has not been assigned the key will have
   //  a value == to NULL
   if(pD[index].key == NULL){
-    printf("Index not used.  Adding %s at index %d\n", inKey, index);
+    //printf("Index not used.  Adding %s at index %d\n", inKey, index);
     pD[index].key = inKey;
     pD[index].value = inVal;
     return 0;
@@ -59,11 +59,11 @@ int assign(dict* pD, char *inKey, int inVal){
   //  at the final node at that specific index
   dict *temp = &pD[index];    //temp pointer to go through linked list
   while(1){
-    printf("Comparing key %s with inKey %s\n", temp->key, inKey);
+    //printf("Comparing key %s with inKey %s\n", temp->key, inKey);
 
     //this means the key already exists
     if(strcmp(temp->key, inKey) == 0){
-      printf("same element found with key %s\n", inKey);
+      //printf("same element found with key %s\n", inKey);
       temp->value = inVal;
       return 1;
     }
@@ -105,7 +105,7 @@ int value(dict *pD, char *inKey){
 
   if(pD[index].key == NULL)
   {
-    printf("Key not found.. Exiting.");
+    //printf("Key not found.. Exiting.");
     exit(8);
   }
 
@@ -116,7 +116,7 @@ int value(dict *pD, char *inKey){
       return temp->value;
     temp = temp->pNext;
   }
-  printf("Key not found.. Exiting.");
+  //printf("Key not found.. Exiting.");
   exit(8);
 }
 
@@ -142,7 +142,8 @@ int len(dict *pD){
 }
 
 void printDict(dict *pD){
-  int i;
+  //firstFoundBool is just a boolean used for formatting the output
+  int i, firstFoundBool = 0;
   printf("{ ");
   for(i = 0; i < DICTSIZE; i++){
     if(pD[i].key ==NULL)
@@ -150,7 +151,13 @@ void printDict(dict *pD){
 
     dict *temp = &pD[i];
     while(1){
-      printf("%s: %d,  ", temp->key, temp->value);
+      if(!firstFoundBool){
+        printf("%s:%d", temp->key, temp->value);
+        firstFoundBool = 1;
+      }
+      else
+        printf(", %s:%d", temp->key, temp->value);
+
       if(temp->pNext == NULL)
         break;
       temp = temp->pNext;
@@ -161,11 +168,11 @@ void printDict(dict *pD){
 
 void test(dict *D){
   printf("If 1 the element already existed: %d\n", assign(D, "Kesley", 7) );
-  printf("If 1 the element already existed: %d\n", assign(D, "Kesley", 7) );
+  printf("If 1 the element already existed: %d\n", assign(D, "Kesley", 9) );
   printf("If 1 the element already existed: %d\n", assign(D, "Keegan", 8) );
-  printf("If 1 the element already existed: %d\n", assign(D, "Keegan", 8) );
+  printf("If 1 the element already existed: %d\n", assign(D, "Keegan", 5) );
   printf("If 1 the element already existed: %d\n", assign(D, "Darla", 2) );
-  printf("If 1 the element already existed: %d\n", assign(D, "Darla", 2) );
+  printf("If 1 the element already existed: %d\n", assign(D, "Darla", 6) );
 
 
   printf("%d\n\n", len(D) );
