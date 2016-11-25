@@ -118,19 +118,43 @@ int value(dict *pD, char *inKey){
   exit(8);
 }
 
+//returns the total number of elements in the array
+int len(dict *pD){
+  int i, count = 0;
+  for(i = 0; i < DICTSIZE; i++){
+    if(pD[i].key ==NULL)
+      continue;
+    count++;
+
+    dict *temp = &pD[i];
+    while(temp->pNext !=NULL){
+      count++;
+      temp = temp->pNext;
+    }
+  }
+  return count;
+}
+
+void test(dict *D){
+  assign(D, "Kesley", 7);
+  assign(D, "Kesley", 7);
+  assign(D, "Keegan", 8);
+  assign(D, "Keegan", 8);
+  assign(D, "Darla", 2);
+  assign(D, "Darla", 2);
+
+  printf("%d", len(D) );
+
+}
+
 int main(){
 
   dict *D = calloc(DICTSIZE, sizeof(dict));
-  //printf("%d%d%d%d\n", hash("Kesley"), hash("e"), hash("f"), hash("a") );
 
-  assign(D, "Kesley", 7);
-
-  printf("Dict contains Kesley: %d\n", contains(D, "Kesley"));
-  printf("This value of Kesley is %d\n", value(D, "Kesley"));
-  printf("This value of Keegan is %d\n", value(D, "Keegan"));
+  test(D);
 
 
-
+  free(D);
   return 0;
 
 }
