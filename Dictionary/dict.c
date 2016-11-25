@@ -49,6 +49,7 @@ int assign(dict* pD, char *inKey, int inVal){
   //if the dict has not been assigned the key will have
   //  a value == to NULL
   if(pD[index].key == NULL){
+    printf("Index not used.  Adding %s at index %d\n", inKey, index);
     pD[index].key = inKey;
     pD[index].value = inVal;
     return 0;
@@ -57,15 +58,19 @@ int assign(dict* pD, char *inKey, int inVal){
   //  key and value then we must make sure that it is placed
   //  at the final node at that specific index
   dict *temp = &pD[index];    //temp pointer to go through linked list
-  while(temp->pNext != NULL){
+  while(1){
+    printf("Comparing key %s with inKey %s\n", temp->key, inKey);
 
     //this means the key already exists
     if(strcmp(temp->key, inKey) == 0){
+      printf("same element found with key %s\n", inKey);
       temp->value = inVal;
       return 1;
     }
+    if(temp->pNext == NULL)
+      break;
     temp = temp->pNext;
-  }
+  }//end while
   temp->pNext = malloc(sizeof(dict));
   temp = temp->pNext;
 
