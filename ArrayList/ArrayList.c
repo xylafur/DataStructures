@@ -95,11 +95,3 @@ void test(ArrList *pMyList){
   printArr(pMyList);
   printf("index of 3: %d\nindex of 2: %d", indexOf(pMyList, 3), indexOf(pMyList, 2));
 }
-
-
-int main(){
-  ArrList *pMyList = newArrList();
-  //test(pMyList);
-
-  return 1;
-}
