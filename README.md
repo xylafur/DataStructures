@@ -6,6 +6,6 @@
 ###Matrix: c++
 
 ###
-###Contributors:
+##Contributors:
 ####Kesley Richardson
 ####Raymond Sutrisno
