@@ -28,8 +28,8 @@ template <class T> class LinkedListNode{
 
 template <class T> class DoubleLinkedListNode : public LinkedListNode<T>{
   protected:
-    DoubleLinkedListNode * next;
-    DoubleLinkedListNode * prev;
+    DoubleLinkedListNode<T> * next;
+    DoubleLinkedListNode<T> * prev;
   public:
     DoubleLinkedListNode(T val) : LinkedListNode<T>(val){
       this->prev = NULL;
@@ -39,12 +39,18 @@ template <class T> class DoubleLinkedListNode : public LinkedListNode<T>{
     }
     void setNext(DoubleLinkedListNode * pNode){
       this->next = pNode;
+      this->prev = pNode->prev;
+      this->prev->next = this;
+      this->next->prev = this;
     }
     DoubleLinkedListNode * getPrev(){
       return this->prev;
     }
     void setPrev(DoubleLinkedListNode * pNode){
       this->prev = pNode;
+      this->next = prev->next;
+      this->prev->next = this;
+      this->next->prev = this;
     }
 };
 
