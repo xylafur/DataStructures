@@ -1,6 +1,7 @@
 #ifndef DOUBLE_LINKED_LIST
   #define DOUBLE_LINKED_LIST
   #include "LinkedList.h"
+  
   template<class T> class DoubleLinkedList : public LinkedList<T>{
     protected:
       DoubleLinkedListNode<T> * head;
