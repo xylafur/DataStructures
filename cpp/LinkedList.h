@@ -13,9 +13,10 @@
       int length;
 
       void findTail(){
+        if(head==NULL)return;
         LinkedListNode<T> * temp = head;
         int tempL = 1;
-        while(temp != NULL && temp->getNext()!= NULL){
+        while(temp->getNext()!= NULL){
           temp = temp->getNext();
           tempL++;
         }
@@ -23,12 +24,15 @@
         tail = temp;
       }
 
-
     public:
       LinkedList(){
          head = NULL;
          tail = NULL;
          length = 0;
+      }
+      LinkedList(T val){
+        head = new LinkedListNode<T>(val);
+        findTail();
       }
       LinkedList(LinkedListNode<T> * node){
          length = 1;
@@ -36,6 +40,8 @@
          findTail();
       }
       ~LinkedList(){
+        if(head == NULL)
+          return;
         LinkedListNode<T> * temp = head->getNext();
         delete( head);
         while(temp!= NULL){
@@ -90,6 +96,7 @@
       }
 
   };
+
 
 
 #endif
