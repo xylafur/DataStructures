@@ -3,3 +3,9 @@
 ###LinkedList (Double, Sorting, etc..): c/c++ 
 ###Dictionary: c 
 ###DynamicArray: c 
+###Matrix: c++
+
+###
+###Contributors:
+####Kesley Richardson
+####Raymond Sutrisno
