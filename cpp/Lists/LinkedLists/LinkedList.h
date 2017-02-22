@@ -15,13 +15,16 @@
       void findTail(){
         if(head==NULL)return;
         LinkedListNode<T> * temp = head;
-        int tempL = 1;
         while(temp->getNext()!= NULL){
           temp = temp->getNext();
-          tempL++;
+          this->length++;
         }
-        length = tempL;
         tail = temp;
+      }
+      void initializeList(LinkedListNode<T> * pNode){
+        this->head = pNode;
+        this->tail = pNode;
+        length = 1;
       }
 
     public:
@@ -31,12 +34,11 @@
          length = 0;
       }
       LinkedList(T val){
-        head = new LinkedListNode<T>(val);
+        initializeList( new LinkedListNode<T>(val) );
         findTail();
       }
-      LinkedList(LinkedListNode<T> * node){
-         length = 1;
-         head = node;
+      LinkedList(LinkedListNode<T> * pNode){
+         initializeList(pNode);
          findTail();
       }
       ~LinkedList(){
@@ -51,37 +53,37 @@
         }
 
       }
-      void addToBeg(T i){
-        addToBeg(new LinkedListNode<T>(i) );
+      void addToBeg(T val){
+        addToBeg(new LinkedListNode<T>(val) );
       }
       void addToBeg(LinkedListNode<T> * pNode ){
-        findTail();
-        pNode->setNext( head);
-         head = pNode;
-         length++;
+        if(head == NULL)
+          initializeList(pNode);
+        else{
+          pNode->setNext(this->head);
+          this->head = pNode;
+          this->length++;
+        }
       }
       void addToEnd(T i){
         addToEnd(new LinkedListNode<T>(i) );
       }
       void addToEnd(LinkedListNode<T> * pNode){
-        findTail();
-        if(tail == NULL){
-          if(head ==NULL)
-            head = pNode;
-          tail = pNode;
-          findTail();
-          return;
+        if(head==NULL)
+          initializeList(pNode);
+        else{
+          this->tail->setNext(pNode);
+          this->tail = pNode;
+          this->tail->setNext(NULL);
+          this->length++;
         }
-         tail->setNext(pNode);
-         tail = pNode;
-         length++;
       }
 
       LinkedListNode<T> * getHead(){
-        return  head;
+        return  this->head;
       }
       LinkedListNode<T> * getTail(){
-        return  tail;
+        return  this->tail;
       }
       void printList(){
         LinkedListNode<T> * temp = head;

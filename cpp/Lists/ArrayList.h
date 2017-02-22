@@ -86,7 +86,7 @@ public:
 
   //Returns number of elements in this list
   unsigned int size() { return num_elems; }
-  unsigned int real_size() { return real_size; }
+  unsigned int actual_size() { return real_size; }
 
   //Deletes all elements by deleting[] values
   void clear() { init(); }
