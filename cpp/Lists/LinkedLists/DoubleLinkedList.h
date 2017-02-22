@@ -30,6 +30,12 @@
         head = pNode;
         findTail();
       }
+      DoubleLinkedListNode<T> * getHead(){
+        return this->head;
+      }
+      DoubleLinkedListNode<T> * getTail(){
+        return this->tail;
+      }
 
   };
 #endif
