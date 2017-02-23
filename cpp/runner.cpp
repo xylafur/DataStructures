@@ -9,7 +9,7 @@ using namespace std;
 
 const unsigned int times = 20;
 
-void testArrayList() {
+void ArrayListTester() {
   ArrayList<int> myints;
   cout << "constructed myints" << endl;
 
@@ -101,6 +101,7 @@ void DoubleLinkedListTester(){
 int main(){
   //LinkedListTester();
   //DoubleLinkedListTester();
+  
+  ArrayListTester();
   return 0;
-
 }
