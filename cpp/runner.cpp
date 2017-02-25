@@ -1,39 +1,61 @@
 
-#include "./Lists/ArrayList.h"
 #include <iostream>
 #include "./Lists/LinkedLists/DoubleLinkedList.h"
 #include "./Lists/LinkedLists/LinkedList.h"
+#include "./Lists/ArrayList.h"
+#include "./Lists/ArrayListUtil.h"
 
 
 using namespace std;
 
-const unsigned int times = 20;
+void printForArrTester(const char * s, ArrayList<int> &arrlist) {
+  if (s != NULL) cout << s << endl;
+
+  for (int i = 0; i < arrlist.size(); ++i) {
+    cout << "arrlist["<< i << "] = " << arrlist[i] << endl;
+  }
+  cout << endl;
+}
 
 void ArrayListTester() {
+  const int times = 20;
+
   ArrayList<int> myints;
   cout << "constructed myints" << endl;
-
   for (unsigned int i = 0; i < times; ++i) {
     myints.append(i);
-    cout << "ArrayList["<< i << "] = " << myints[i] << endl;
   }
+  printForArrTester("After appending: ", myints);
 
 
   cout << "Deleting index 2" << endl;
   myints.remove(2);
-  for (int i = 0; i < myints.size(); ++i) {
-    cout << "ArrayList["<< i<< "] = " << myints[i] << endl;
-  }
+  printForArrTester("After Deleting index 2: ", myints);
+
+  
+  cout << "Attempting to insert value of 2 at index 2: " << endl;
+  myints.insert(2, 2);
+  printForArrTester("After insert value of 2 at index 2: ", myints);
+
+  int * arr = new int[6]{-1, -2, -3, -4, -5, -6};
+  cout << "Attempting to insert pointer array of values into index 3" << endl;
+  myints.insert(arr, 6, 3);
+  printForArrTester("After insertion of array at index 3", myints);
+  delete[] arr;
+
 
   for (int i = 0; i < 12; ++i) {
     myints.remove(myints.size()-1);
   }
-  cout << endl << "Deleted last 12" << endl;
-  for (int i = 0; i < myints.size(); ++i) {
-    cout << "ArrayList["<< i<< "] = " << myints[i] << endl;
-  }
+  printForArrTester("After Deleting last 12: ", myints);
 
+  int appval = -35;
+  cout << "Appending manually: " << endl;
+  cout << "using arr.insert(" << appval<< ", arr.size()) "<< endl; 
+  myints.insert(appval--, myints.size());
+  printForArrTester("After inserting manually", myints);
 }
+
 
 void LinkedListTester(){
   cout << "LinkedList Test starting..\n" << endl;
