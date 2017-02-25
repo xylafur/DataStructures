@@ -2,7 +2,7 @@
 ## varying different types:
 ###LinkedList (Double, Sorting, etc..): c/c++ 
 ###Dictionary: c 
-###DynamicArray: c 
+###DynamicArray: c/c++
 ###Matrix: c++
 
 ###
