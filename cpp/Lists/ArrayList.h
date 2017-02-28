@@ -1,3 +1,4 @@
+
 #ifndef ARRAYLIST_H
 #define ARRAYLIST_H
 
@@ -5,37 +6,38 @@
 #include <iostream>
 #include <climits>
 
-const int DEFAULT_ARRAYLIST_SIZE = 0x10; // 16
+const int DEFAULT_ARRAYLIST_SIZE = 0x10;  // 16
 const int MAX_ARRAYLIST_SIZE = static_cast<int>(1 << 30);
+
 
 template <class T> class ArrayList {
 
 protected:
-  int num_elems; // Number of elements
-  int real_size; // Real Arraysize
+  int num_elems;    // Number of elements
+  int real_size;    // Real Arraysize
   T *values = NULL;
 
   /**
     * Initializes member variables, serves as also a reset
     */
   void init(int size = DEFAULT_ARRAYLIST_SIZE) {
-    if (values) delete[] values; //possibly unneeded
-
+    if (values) { 
+      delete[] values; values = NULL;
+    }
     values = new T[size];
     real_size = size;
     num_elems = 0;
   }
 
   /**
-    * Checks if index < num_elems
+    * Checks if  0 <= index < num_elems
     * if destructive is true, throws an exception
     */ 
   bool rangeCheck(int index, bool destructive = false) {
     bool inrange = 0 <= index && index < num_elems;
     if (destructive && !inrange) {
-      std::cerr
-          << "Array index out of bounds:[" << index << "] when size is " << num_elems
-          << std::endl;
+      std::cerr << "Array index out of bounds:[" << index 
+                << "] when size is " << num_elems << std::endl;
       throw std::exception();
     }
     return inrange;
@@ -44,6 +46,8 @@ protected:
   /**
     * Copies T values over to another array dest
     * Should only be called if num_elems <= length of dest
+    * 
+    * num_elems must be smaller than dest!
     */
   void copyOver(T *dest) {
     for (int i = 0; i < num_elems; ++i)
@@ -51,7 +55,7 @@ protected:
   }
 
   /**
-    * 
+    * newsize must be > 0
     */
   void reSize(int newsize) {
     if (newsize == real_size) return;
@@ -61,26 +65,49 @@ protected:
     values = newvalues;
     real_size = newsize;
   }
-
-  bool sizeCheckPrep(int newSize) {
+  
+  /**
+    * Checks if newSize you want to allocate to is within 
+    * the realsize. If its bigger it reallocates allocates a  
+    * bigger array and then copies values to it.
+    */
+  bool allocatePrep(int newSize) {
     if (num_elems >= MAX_ARRAYLIST_SIZE) {
-      std::cerr << "Error: exceeded maximum size (2^31) <= " << num_elems << std::endl;
+      std::cerr << "Error: exceeded maximum size (2^31) <= " 
+                << num_elems << std::endl;
+      this->~ArrayList();
       throw std::exception();
     }
     if (newSize > real_size) {
       reSize(real_size * 2);
     }
+    //No need to check for newSize < 0 since do nothing for that
     return true;
   }
 
-  void slideBackward(int start, int slide_head) {
-    // Because programmer might be idiot
-    rangeCheck(start, true);
-
+  /**
+    * precondition: 0 < start < num_elems
+    * shifts elements from dest to  slide_head
+    * decreases num_elems accordingly
+    *
+    * before:
+    *                      * <<------------*-------*---*--
+    * values:|...|...|...|dest|...|...|slide_head|...|...|...|end
+    * index :  0   1  ... dest   ...   slide_head ... ... ...|num_elems
+    *
+    * after:
+    *
+    * values:|...|...|...|slide_head|...|...|...|end
+    * index :  0   1  ... dest           ...    |num_elems
+    *                                             ^   
+    *                      reduced num_elems now _|
+    *
+    */
+  void slideBackward(int dest, int slide_head) {
     int times = num_elems - slide_head, i;
     for (i = 0; i < times; ++i) 
-      values[start + i] = values[slide_head + i];
-    num_elems -= (slide_head - start);
+      values[dest + i] = values[slide_head + i];
+    num_elems -= (slide_head - dest);
   }
 
   /**
@@ -88,12 +115,11 @@ protected:
     * element a specified amount.
     * must! : 0 <= start < num_elems
     *         num_elems + amount < realsize
+    *
+    *
     */
   void slideForward(int start, int amount) {
-    // Because programmer might be idiot
-    rangeCheck(start, true);
-
-    sizeCheckPrep(num_elems + amount);
+    allocatePrep(num_elems + amount);
     for (int i = num_elems - 1; i >= start; --i) {
       values[i + amount] = values[i];
     }
@@ -105,16 +131,43 @@ public:
   ArrayList() { init(); }
   ~ArrayList() { delete[] values; }
 
-  //Returns number of elements in this list
   int size() { return num_elems; }
   int actual_size() { return real_size; }
 
-  //Deletes all elements by deleting[] values
-  void clear() { init(); }
+  void purgeAll() { init(); }
+
+
+  /**
+    * removes entries from [start, end-1]
+    * end is non inclusive
+    */
+  void purge(int start, int end = -1) {
+    rangeCheck(start);
+    if (end == -1 || end == start + 1) { 
+      pop(start); return;
+    } 
+
+    if (start >= end) {
+      std::cerr << "ArrayList.purge(start:" << start << ", end:" 
+                << end << "), start must be less than end." 
+                << std::endl;
+    }
+    
+    if (end == num_elems) { 
+      if (start == 0) {
+        init(); return;
+      }
+      num_elems = start + 1;
+      return;
+    }
+
+    slideBackward(start, end + 1);
+  }
   
   inline bool isEmpty() { return this->num_elems == 0; }
 
-  T remove(int index) { rangeCheck(index, true);
+  T pop(int index) { 
+    rangeCheck(index, true);
     T t = values[index];
     slideBackward(index, index + 1);
 
@@ -124,8 +177,8 @@ public:
     return t;
   }
 
-  void append(T val) {
-    sizeCheckPrep(num_elems + 1);
+  bool append(T val) {
+    allocatePrep(num_elems + 1);
     values[num_elems++] = val;
   }
 
@@ -140,7 +193,7 @@ public:
     num_elems++;
   }
 
-  void insert(T * vals, int len, int index = 0) {
+  void insert(T * vals, unsigned int len, int index = 0) {
     if (index != num_elems) rangeCheck(index, true);
 
     slideForward(index, len);
