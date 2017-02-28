@@ -9,21 +9,25 @@
 const int DEFAULT_ARRAYLIST_SIZE = 0x10;  // 16
 const int MAX_ARRAYLIST_SIZE = static_cast<int>(1 << 30);
 
-
 template <class T> class ArrayList {
 
 protected:
   int num_elems;    // Number of elements
   int real_size;    // Real Arraysize
-  T *values = NULL;
+  T *values = NULL; // values
 
   /**
     * Initializes member variables, serves as also a reset
     */
-  void init(int size = DEFAULT_ARRAYLIST_SIZE) {
+  void init(int size = 0) {
     if (values) { 
-      delete[] values; values = NULL;
+      delete[] values; 
+      values = NULL;
     }
+
+    size = (size < DEFAULT_ARRAYLIST_SIZE) 
+            ? DEFAULT_ARRAYLIST_SIZE : size;
+
     values = new T[size];
     real_size = size;
     num_elems = 0;
@@ -34,10 +38,10 @@ protected:
     * if destructive is true, throws an exception
     */ 
   bool rangeCheck(int index, bool destructive = false) {
-    bool inrange = 0 <= index && index < num_elems;
+    bool inrange = ( 0 <= index && index < num_elems );
     if (destructive && !inrange) {
       std::cerr << "Array index out of bounds:[" << index 
-                << "] when size is " << num_elems << std::endl;
+                << "] when num_elems is " << num_elems << std::endl;
       throw std::exception();
     }
     return inrange;
@@ -47,7 +51,7 @@ protected:
     * Copies T values over to another array dest
     * Should only be called if num_elems <= length of dest
     * 
-    * num_elems must be smaller than dest!
+    * @precondition: num_elems must be smaller than dest size!
     */
   void copyOver(T *dest) {
     for (int i = 0; i < num_elems; ++i)
@@ -55,7 +59,8 @@ protected:
   }
 
   /**
-    * newsize must be > 0
+    * @param newsize : new size to resize values to
+    * @precondition: newsize must be > 0
     */
   void reSize(int newsize) {
     if (newsize == real_size) return;
@@ -67,15 +72,20 @@ protected:
   }
   
   /**
-    * Checks if newSize you want to allocate to is within 
-    * the realsize. If its bigger it reallocates allocates a  
-    * bigger array and then copies values to it.
+    * called when adding elements to the list. 
+    * 
+    * Ensures that there is enough space by checking if 
+    * newSize you want to allocate to is within the realsize. 
+    * If its bigger it reallocates allocates a bigger array 
+    * and then copies values to it.
+    * 
+    * @param: newSize : the "bigger" size you want
+    * @precondition: newSize must be positive
     */
-  bool allocatePrep(int newSize) {
+  bool ensureCapacity(int newSize) {
     if (num_elems >= MAX_ARRAYLIST_SIZE) {
       std::cerr << "Error: exceeded maximum size (2^31) <= " 
                 << num_elems << std::endl;
-      this->~ArrayList();
       throw std::exception();
     }
     if (newSize > real_size) {
@@ -119,7 +129,7 @@ protected:
     *
     */
   void slideForward(int start, int amount) {
-    allocatePrep(num_elems + amount);
+    ensureCapacity(num_elems + amount);
     for (int i = num_elems - 1; i >= start; --i) {
       values[i + amount] = values[i];
     }
@@ -129,6 +139,12 @@ protected:
 public:
 
   ArrayList() { init(); }
+  ArrayList(const &ArrayList copy) {
+    init(copy.real_size);
+    for (int i = copy.num_elems; --i >= 0; values[i] = copy.values[i]);
+    num_elems = copy.num_elems;
+  }
+
   ~ArrayList() { delete[] values; }
 
   int size() { return num_elems; }
@@ -176,9 +192,10 @@ public:
     }
     return t;
   }
+  
 
   bool append(T val) {
-    allocatePrep(num_elems + 1);
+    ensureCapacity(num_elems + 1);
     values[num_elems++] = val;
   }
 
@@ -212,6 +229,9 @@ public:
     return values[index];
   }
 
+  T& get(int &index) {
+    return (*this)[index];
+  }
 };
 
 #endif

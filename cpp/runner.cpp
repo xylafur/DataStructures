@@ -63,6 +63,11 @@ void ArrayListTester() {
   cout << "Purging 0 to size" << endl;
   myints.purge(0, myints.size());
   printForArrTester("After purging all", myints);
+  
+  cout << "arr.isEmpty() : " << myints.isEmpty() << endl;
+
+  cout << endl << "Error Tests: " << endl;
+  myints.insert(5, 0);
 }
 
 
