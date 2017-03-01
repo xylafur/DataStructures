@@ -2,7 +2,7 @@
 #ifndef STACK_H
 #define STACK_H
 
-#include "arraylist.h"
+#include "ArrayList.h"
 
 template <class T> class Stack {
 protected:
@@ -35,6 +35,6 @@ public:
   void purgeAll() {
     values.purgeAll();
   }
-}
+};
 
 #endif

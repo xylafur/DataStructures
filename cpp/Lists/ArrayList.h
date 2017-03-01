@@ -139,7 +139,7 @@ protected:
 public:
 
   ArrayList() { init(); }
-  ArrayList(const &ArrayList copy) {
+  ArrayList(const ArrayList<T> &copy) {
     init(copy.real_size);
     for (int i = copy.num_elems; --i >= 0; values[i] = copy.values[i]);
     num_elems = copy.num_elems;
@@ -194,7 +194,7 @@ public:
   }
   
 
-  bool append(T val) {
+  void append(T val) {
     ensureCapacity(num_elems + 1);
     values[num_elems++] = val;
   }

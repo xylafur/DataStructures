@@ -4,7 +4,7 @@
 #include "./Lists/LinkedLists/LinkedList.h"
 #include "./Lists/ArrayList.h"
 #include "./Lists/ArrayListUtil.h"
-
+#include "./Lists/Stack.h"
 
 using namespace std;
 
