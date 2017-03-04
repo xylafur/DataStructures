@@ -4,7 +4,7 @@
 #include "./Lists/LinkedLists/LinkedList.h"
 #include "./Lists/ArrayList.h"
 #include "./Lists/ArrayListUtil.h"
-
+#include "./Lists/Stack.h"
 
 using namespace std;
 
@@ -29,7 +29,7 @@ void ArrayListTester() {
 
 
   cout << "Deleting index 2" << endl;
-  myints.remove(2);
+  myints.pop(2);
   printForArrTester("After Deleting index 2: ", myints);
 
   
@@ -45,15 +45,29 @@ void ArrayListTester() {
 
 
   for (int i = 0; i < 12; ++i) {
-    myints.remove(myints.size()-1);
+    myints.pop(myints.size()-1);
   }
   printForArrTester("After Deleting last 12: ", myints);
+  
 
   int appval = -35;
   cout << "Appending manually: " << endl;
   cout << "using arr.insert(" << appval<< ", arr.size()) "<< endl; 
   myints.insert(appval--, myints.size());
   printForArrTester("After inserting manually", myints);
+
+  cout << "Purging half from " << myints.size()/2 << endl;
+  myints.purge(myints.size()/2, myints.size());
+  printForArrTester("After purging half", myints);
+  
+  cout << "Purging 0 to size" << endl;
+  myints.purge(0, myints.size());
+  printForArrTester("After purging all", myints);
+  
+  cout << "arr.isEmpty() : " << myints.isEmpty() << endl;
+
+  cout << endl << "Error Tests: " << endl;
+  myints.insert(5, 0);
 }
 
 
