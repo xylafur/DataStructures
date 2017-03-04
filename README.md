@@ -4,6 +4,8 @@
 ###Dictionary: c 
 ###DynamicArray: c / c++
 ###Matrix: c++
+###Stack: c++
+###Infinite Integer: c++
 
 ###
 ##Contributors:
