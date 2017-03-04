@@ -1,13 +1,13 @@
 # Data Structures in c/cpp
 ## varying different types:
-LinkedList (Double, Sorting, etc..): c/c++ 
-Dictionary: c 
-DynamicArray: c / c++
-Matrix: c++
-Stack: c++
-Infinite Integer: c++
-
+LinkedList (Double, Sorting, etc..): c/c++ < br />
+Dictionary: c < br />
+DynamicArray: c / c++ < br />
+Matrix: c++ < br />
+Stack: c++ < br />
+Infinite Integer: c++ < br />
+ 
 
 ##Contributors:
-Kesley Richardson
-Raymond Sutrisno
+Kesley Richardson < br />
+Raymond Sutrisno < br />
