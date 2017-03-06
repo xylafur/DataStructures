@@ -28,6 +28,12 @@ protected:
     size = (size < DEFAULT_ARRAYLIST_SIZE) 
             ? DEFAULT_ARRAYLIST_SIZE : size;
 
+    if (size >= MAX_ARRAYLIST_SIZE) {
+      std::cerr << "Cannot initialize ArrayList with size >= "
+                << MAX_ARRAYLIST_SIZE << std::endl;
+      throw std::exception();
+    }
+
     values = new T[size];
     real_size = size;
     num_elems = 0;
@@ -84,7 +90,8 @@ protected:
     */
   bool ensureCapacity(int newSize) {
     if (num_elems >= MAX_ARRAYLIST_SIZE) {
-      std::cerr << "Error: exceeded maximum size (2^31) <= " 
+      std::cerr << "Error: exceeded MAX_ARRAYLIST_SIZE: "
+                << MAX_ARRAYLIST_SIZE << ", size = "
                 << num_elems << std::endl;
       throw std::exception();
     }
@@ -145,6 +152,9 @@ public:
     num_elems = copy.num_elems;
   }
 
+  ArrayList(int size) {
+    init(size);
+  }
   ~ArrayList() { delete[] values; }
 
   int size() { return num_elems; }
