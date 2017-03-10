@@ -234,6 +234,16 @@ public:
     insert(index, arr_list.values, arr_list.num_elems);
   }
 
+  int indexOf(const T& compare) {
+    int ind = -1;
+    for (int i = 0; i < num_elems; ++i) {
+      if (values[i] == compare) { ind = i; break; }
+    }
+    return ind;
+  }
+  
+  bool contains(const T& compare) { return indexOf(compare) != -1; }
+  
   T& operator [](int index) { 
     rangeCheck(index, true);
     return values[index];

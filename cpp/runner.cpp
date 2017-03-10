@@ -68,6 +68,9 @@ void ArrayListTester() {
 
   cout << endl << "Error Tests: " << endl;
   myints.insert(5, 0);
+  printForArrTester("after insert 5", myints);
+  cout << "myints.contains(5) : " << myints.contains(5) << endl;
+  cout << "myints.indexOf(5)  : " << myints.indexOf(5) << endl;
 }
 
 
