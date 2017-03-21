@@ -8,6 +8,6 @@ Stack: c++ <br />
 Infinite Integer: c++ <br />
  
 
-##Contributors:
+## Contributors:
 Kesley Richardson <br />
 Raymond Sutrisno <br />
