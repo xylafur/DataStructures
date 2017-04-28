@@ -1,7 +1,8 @@
 # Data Structures in c/cpp
 ## varying different types:
 LinkedList (Double, Sorting, etc..): c/c++ <br />
-Dictionary: c <br />
+Dictionary/ Hashmap: c <br />
+Hashtable: c++ <br />
 DynamicArray: c / c++ <br />
 Matrix: c++ <br />
 Stack: c++ <br />
